@@ -1,0 +1,53 @@
+{
+    "name": "@nuxt-alt/antdv",
+    "version": "0.1.0",
+    "description": "A nuxt module to handle the use of ant-design-vue",
+    "homepage": "https://github.com/nuxt-alt/antdv",
+    "author": "Teranode",
+    "keywords": [
+        "nuxt",
+        "nuxtjs",
+        "nuxt-module",
+        "nuxt-plugin",
+        "nuxt-module-alternatives",
+        "antdv",
+        "ant-design-vue"
+    ],
+    "license": "MIT",
+    "type": "module",
+    "main": "./dist/module.cjs",
+    "module": "./dist/module.mjs",
+    "types": "./dist/types.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "dev": "nuxi dev playground",
+        "dev:build": "nuxi build playground",
+        "prepack": "unbuild",
+        "dev:prepare": "unbuild --stub && nuxi prepare playground"
+    },
+    "dependencies": {
+        "@nuxt/kit": "^3.0.0",
+        "ant-design-vue": "^3.2.15",
+        "less": "^4.1.3",
+        "less-vars-to-js": "^1.3.0",
+        "lodash-es": "^4.17.21",
+        "unplugin-vue-components": "^0.22.11"
+    },
+    "devDependencies": {
+        "@types/less": "^3.0.3",
+        "@types/lodash-es": "^4",
+        "nuxt": "^3.0.0",
+        "unbuild": "latest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nuxt-alt/antdv.git",
+        "directory": "@nuxt-alt/antdv"
+    },
+    "bugs": {
+        "url": "https://github.com/nuxt-alt/antdv/issues"
+    },
+    "packageManager": "yarn@3.3.0"
+}
