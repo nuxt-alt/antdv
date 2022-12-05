@@ -51,21 +51,47 @@ Whether to enable resolving icons for ant-design-vue.
 - Type: `String`
 - Default: `-theme`
 
-The suffix for when using the `dark` and/or `light` theme modes 
+The suffix for when using the `custom` mode.
 
 ### `themes.mode`
 
 - Type: `String`
 - Default: `default`
 
-The theme mode to choose for ant-design-vue
+The theme mode to choose for ant-design-vue, choosing `default` will disable the option to use custom themes as they rely on being enclosed in a class.
 
 | Mode | Description |
 | --- | --- |
 | default | Renders the default theme of ant-design-vue, which is the light theme but without being enclosed into a theme class |
-| dark | Renders only the dark theme of ant-design-vue enclosed in a dark theme class |
-| light | Renders only the light theme of ant-design-vue enclosed in a light theme class |
-| both | Renders both the dark and light theme of ant-design-vue enclosed in both a dark and light theme class |
+| custom | disables the default theme in favor of using the light and/or dark theme |
+
+### `themes.dark`
+
+- Type: `Object | boolean`
+- Default: `false`
+
+Modify the properties of the default dark theme.
+
+| Properties | Type | Description |
+| --- | --- | --- |
+| compact | Boolean | Whether to use compact variables |
+| theme | String | The theme's name |
+| themePrefix | String | Prefix of the theme to use ofr enclosing |
+| modifyVars | Object | The variables to edit for the theme |
+
+### `themes.light`
+
+- Type: `Object | boolean`
+- Default: `false`
+
+Modify the properties of the default light theme.
+
+| Properties | Type | Description |
+| --- | --- | --- |
+| compact | Boolean | Whether to use compact variables |
+| theme | String | The theme's name |
+| themePrefix | String | Prefix of the theme to use ofr enclosing |
+| modifyVars | Object | The variables to edit for the theme |
 
 ### `themes.prefixClass`
 
@@ -74,31 +100,15 @@ The theme mode to choose for ant-design-vue
 
 Set the Class prefix for all the themes. For example instead of `ant-button`, if you were to set it as `app` it would then be `app-button`. You also need to change this in your `ConfigProvider` for ant-design-vue`
 
-### `themes.lightVars`
-
-- Type: `Array`
-  - Items: `String`
-- Default: `[]`
-
-Modify the varibles that are set for the light theme.
-
-### `themes.darkVars`
-
-- Type: `Array`
-  - Items: `String`
-- Default: `[]`
-
-Modify the varibles that are set for the dark theme.
-
 ### `themeConfig`
 
 - Type: `Array`
   - Items: `Object`
 - Default: `[]`
 
-You may register any other themes you wish to include in the preprocessing options. This options is pretty complicated to set up as you need some dependencies to work with.
+You may register any other themes you wish to include in the preprocessing options.
 
-Example (Example of the dark theme): 
+Example (Example of a dark theme): 
 
 ```ts
 // nuxt.config.ts
@@ -107,6 +117,8 @@ export default defineNuxtConfig({
         themeConfig: [{
             theme: 'dark',
             themePrefix: 'dark',
+            dark: true,
+            compact: false,
             modifyVars: {
                 'text-color': 'fade(@white, 65%)',
                 'gray-8': '@text-color',
@@ -119,4 +131,4 @@ export default defineNuxtConfig({
 });
 ```
 
-If the theme name has `dark` in it it will incorporate the dark variables so you just need to specify the variables you want to alter, otherwise it will use the default theme
+Setting the `dark` property will use the dark variables, setting the `compact` proprty will use compact variables.

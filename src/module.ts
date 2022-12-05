@@ -10,6 +10,7 @@ import Components from 'unplugin-vue-components/vite'
 import less from 'less'
 import defaultVars from './default-vars'
 import dark from './dark-vars'
+import compactPaletteLess from './compact-vars'
 
 const CONFIG_KEY = 'antdv'
 
@@ -26,11 +27,11 @@ export default defineNuxtModule({
         styles: 'less',
         icons: true,
         themes: {
+            dark: false,
+            light: false,
             prefixClass: 'ant',
             suffix: '-theme',
-            mode: 'default',
-            darkVars: {},
-            lightVars: {}
+            mode: 'default'
         },
         themeConfig: []
     } as ModuleOptions,
@@ -58,10 +59,10 @@ export default defineNuxtModule({
         })
 
         nuxt.hook('vite:extendConfig', config => {
-            if (options.styles === 'less') {
+            if (options.styles === 'less' && options.themes.mode === 'custom') {
                 const themes = [
-                    ...['dark', 'both'].includes(options.themes.mode!) ? darkTheme(options) : [],
-                    ...['light', 'both'].includes(options.themes.mode!) ? lightTheme(options) : [],
+                    ...options.themes.dark ? darkTheme(options) : [],
+                    ...options.themes.light ? lightTheme(options) : [],
                     ...options.themeConfig!
                 ]
 
@@ -69,7 +70,7 @@ export default defineNuxtModule({
                     preprocessorOptions: {
                         less: {
                             javascriptEnabled: true,
-                            additionalData: (content: string, filename: string) => additionalData(options, themes as unknown as ThemeConfig, content, filename),
+                            additionalData: (content: string, filename: string) => additionalData(options, themes, content, filename),
                         }
                     }
                 })
@@ -113,38 +114,44 @@ export default defineNuxtModule({
     }
 })
 
-const darkTheme = (options: ModuleOptions) => [
-    {
-        theme: 'dark',
-        themePrefix: 'dark',
-        modifyVars: defu({
-            'text-color': 'fade(@white, 65%)',
-            'gray-8': '@text-color',
-            'background-color-base': '#555',
-            'skeleton-color': 'rgba(0,0,0,0.8)'
-        }, options.themes.lightVars),
-    }
-];
+const darkTheme = (options: ModuleOptions) => [defu({
+    theme: 'dark',
+    themePrefix: 'dark',
+    compact: false,
+    modifyVars: {
+        'text-color': 'fade(@white, 65%)',
+        'gray-8': '@text-color',
+        'background-color-base': '#555',
+        'skeleton-color': 'rgba(0,0,0,0.8)'
+    },
+}, { 
+    ...typeof options.themes.dark === 'object' ? options.themes.dark : {},
+    dark: true,
+})];
 
-const lightTheme = (options: ModuleOptions) => [
-    {
-        theme: 'light',
-        themePrefix: 'light',
-        modifyVars: options.themes.lightVars,
-    }
-];
+const lightTheme = (options: ModuleOptions) => [defu({
+    theme: 'light',
+    themePrefix: 'light',
+    compact: false,
+    modifyVars: {},
+}, { 
+    ...typeof options.themes.light === 'object' ? options.themes.light : {},
+    dark: false,
+})];
 
 const additionalData = async (opts: ModuleOptions, themes: ThemeConfig, content: string, filename: string): Promise<string> => {
     const themePromises = themes.map(async theme => {
-        const vars = theme.theme.includes('dark') ? defu({ ...defaultVars, ...dark }) : defaultVars
+        const vars = theme.dark ? defu({ ...defaultVars, ...dark }) : defaultVars
+        const compact = theme.compact ? defu(compactPaletteLess) : {}
 
         theme.modifyVars = Object.assign({
-            hack: `true;@import "${path.resolve('node_modules/ant-design-vue/lib/style/color/colorPalette.less')}";`,
-            ...vars
+            hack: `true;@import "${path.resolve('node_modules/ant-design-vue/es/style/color/colorPalette.less')}";`,
+            ...vars,
+            ...compact
         }, theme.modifyVars)
 
-        theme.modifyVars['root-entry-name'] = theme.theme.includes('dark') ? 'dark' : 'default'
-        theme.modifyVars['ant-prefix'] = opts.themes.prefixClass
+        theme.modifyVars!['root-entry-name'] = theme.dark ? 'dark' : 'default'
+        theme.modifyVars!['ant-prefix'] = opts.themes.prefixClass
 
         const { themePrefix, modifyVars = {} } = theme;
 

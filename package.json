@@ -1,6 +1,6 @@
 {
     "name": "@nuxt-alt/antdv",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "A nuxt module to handle the use of ant-design-vue",
     "homepage": "https://github.com/nuxt-alt/antdv",
     "author": "Teranode",
