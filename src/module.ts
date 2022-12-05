@@ -76,6 +76,16 @@ export default defineNuxtModule({
                 })
             }
 
+            if (options.styles === 'less' && options.themes.mode === 'default') {
+                config.css = defu(config.css, {
+                    preprocessorOptions: {
+                        less: {
+                            javascriptEnabled: true
+                        }
+                    }
+                })
+            }
+
             config.optimizeDeps = defu(config.optimizeDeps, {
                 includes: [
                     ...(options.icons ? ['@ant-design/icons-vue'] : []),
