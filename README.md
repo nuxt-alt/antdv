@@ -1,6 +1,6 @@
 > [Ant Design Vue](https://antdv.com) module for [Nuxt](https://nuxt.com)
 
-## Infos
+## Info
 A somewhat comprehensive module for Ant Design Vue
 
 ## Setup
@@ -76,7 +76,7 @@ Modify the properties of the default dark theme.
 | --- | --- | --- |
 | compact | Boolean | Whether to use compact variables |
 | theme | String | The theme's name |
-| themePrefix | String | Prefix of the theme to use ofr enclosing |
+| themePrefix | String | Prefix of the theme to use for enclosing |
 | modifyVars | Object | The variables to edit for the theme |
 
 ### `themes.light`
@@ -90,7 +90,7 @@ Modify the properties of the default light theme.
 | --- | --- | --- |
 | compact | Boolean | Whether to use compact variables |
 | theme | String | The theme's name |
-| themePrefix | String | Prefix of the theme to use ofr enclosing |
+| themePrefix | String | Prefix of the theme to use for enclosing |
 | modifyVars | Object | The variables to edit for the theme |
 
 ### `themes.prefixClass`
